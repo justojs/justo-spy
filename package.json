@@ -1,6 +1,6 @@
 {
   "name": "justo-spy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -17,10 +17,23 @@
     }
   ],
   "keywords": [
+    "Browser test",
+    "Browser testing",
+    "io.js test",
+    "io.js testing",
     "Justo",
     "Justo.js",
+    "Node test",
+    "Node testing",
+    "Node.js test",
+    "Node.js testing",
+    "Spy",
     "Test",
-    "Test spy"
+    "Test double",
+    "Testing",
+    "Test spy",
+    "Unit test",
+    "Unit testing"
   ],
   "bugs": {
     "url": "https://github.com/JustoJS/justo-spy/issues",
