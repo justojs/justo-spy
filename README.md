@@ -1,5 +1,4 @@
 # justo-spy
-<<<<<<< HEAD
 
 A test spy library.
 
@@ -236,6 +235,3 @@ Aditionally, both types contain the following methods:
 - `raised() : boolean`. Did it throw an error?
 - `raised(msg : string) : boolean`. Did it throw an error with the specified message?
 - `raised(error : object) : boolean`. Did it throw the specified error?
-=======
-The spy framework.
->>>>>>> 9d93d15bec545c2ed07be3059e65951adc64751b
