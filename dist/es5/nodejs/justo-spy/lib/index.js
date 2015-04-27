@@ -15,21 +15,26 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
  * @param fn:function      The function to spy.
  *
  * @overload Object spy
- * @param instance:object  The object to spy.
+ * @param obj:object              The object to spy.
+ * @param [mems]:string|string[]  The members to spy.
  */
 exports.spy = spy;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function spy(obj) {
+function spy() {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
   var res;
 
   //(1) arguments
-  if (!obj) throw new Error("Object to spy expected.");
+  if (args.length === 0) throw new Error("Object to spy expected.");
 
   //(2) create spy
-  if (obj instanceof Function) res = createFunctionSpy(obj);else res = createObjectSpy(obj);
+  if (args[0] instanceof Function) res = createFunctionSpy(args[0]);else res = createObjectSpy.apply(undefined, args);
 
   //(3) return
   return res;
@@ -63,10 +68,24 @@ function createFunctionSpy(fn) {
 /**
  * Creates a double to spy an object.
  *
- * @param obj:object  The object to spy.
+ * @param obj:object            The object to spy.
+ * @param mems:string|string[]  The members to spy.
  */
 function createObjectSpy(obj) {
+  var mems = arguments[1] === undefined ? [] : arguments[1];
+
+  //(1) arguments
+  if (typeof mems == "string") mems = [mems];
+
+  //(2) create spy
   Object.defineProperty(obj, "spy", { value: new ObjectSpy(obj) });
+
+  //(3) monitor members
+  for (var i = 0; i < mems.length; ++i) {
+    obj.spy.monitor(mems[i]);
+  }
+
+  //(4) add
   return obj;
 }
 
