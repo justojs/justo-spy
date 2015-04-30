@@ -1,5 +1,5 @@
 //imports
-const spy = require("justo-spy").spy;
+const spy = require("../../dist/es5/nodejs/justo-spy").spy;
 
 //suite
 describe("spy()", function() {

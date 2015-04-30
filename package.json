@@ -1,6 +1,6 @@
 {
   "name": "justo-spy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -44,14 +44,14 @@
     "url": "https://github.com/JustoJS/justo-spy.git"
   },
   "engines": {
-    "node": "*"
+    "node": ">=0.12.0"
   },
   "dependencies": {
+    "deep-equal": "^1.0.0",
     "vit-logger": "*"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "deep-equal": "^1.0.0",
     "grunt": "^0.4.5",
     "grunt-babel": "*",
     "grunt-contrib-clean": "*",
@@ -68,5 +68,8 @@
   "files": [
     "lib",
     "test"
-  ]
+  ],
+  "scripts": {
+    "test": "grunt mochaTest:es5"
+  }
 }

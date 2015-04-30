@@ -88,7 +88,6 @@ module.exports = function(grunt) {
       es5: {
         options: {
           require: [
-            "sinon",
             "justo-assert"
           ]
         },

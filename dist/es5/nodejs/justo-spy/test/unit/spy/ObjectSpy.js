@@ -1,6 +1,6 @@
 //imports
 const assert = require("assert");
-const spy = require("justo-spy").spy;
+const spy = require("../../../dist/es5/nodejs/justo-spy").spy;
 
 //suite
 describe("ObjectSpy", function() {
