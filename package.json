@@ -60,6 +60,7 @@
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
     "grunt-mocha-test": "^0.12.7",
+    "grunt-travis-lint": "0.0.3",
     "justo-assert": "*",
     "mocha": "^2.2.4"
   },
