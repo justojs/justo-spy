@@ -60,6 +60,9 @@ function createFunctionSpy(fn) {
   };
 
   Object.defineProperty(res, "spy", { value: mon });
+  Object.defineProperty(res, "toString", { value: function value() {
+      return fn.toString();
+    }, enumerable: true });
 
   //(2) return
   return res;

@@ -30,6 +30,15 @@ describe("FunctionSpy", function() {
     });
   });
 
+  describe("#toString()", function() {
+    function fn(one, two) {}
+
+    it("toString()", function() {
+      double = spy(fn);
+      double.toString().must.be.eq("function fn(one, two) {}");
+    });
+  });
+
   describe("Call", function() {
     describe("Call with return", function() {
       it("Call #1", function() {
