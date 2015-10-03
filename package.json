@@ -1,6 +1,6 @@
 {
   "name": "justo-spy",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -19,8 +19,6 @@
   "keywords": [
     "Browser test",
     "Browser testing",
-    "io.js test",
-    "io.js testing",
     "Justo",
     "Justo.js",
     "Node test",
@@ -36,19 +34,18 @@
     "Unit testing"
   ],
   "bugs": {
-    "url": "https://github.com/JustoJS/justo-spy/issues",
+    "url": "https://github.com/justojs/justo-spy/issues",
     "email": "justojs.org@outlook.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JustoJS/justo-spy.git"
+    "url": "https://github.com/justojs/justo-spy.git"
   },
   "engines": {
     "node": ">=0.12.0"
   },
   "dependencies": {
-    "deep-equal": "^1.0.0",
-    "vit-logger": "*"
+    "deep-equal": "^1.0.0"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -59,10 +56,10 @@
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-mocha-test": "^0.12.7",
-    "grunt-travis-lint": "0.0.3",
+    "grunt-mocha-test": "*",
+    "grunt-travis-lint": "*",
     "justo-assert": "*",
-    "mocha": "^2.2.4"
+    "mocha": "*"
   },
   "preferGlobal": false,
   "main": "lib/index.js",
