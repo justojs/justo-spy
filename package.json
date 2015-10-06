@@ -1,7 +1,7 @@
 {
   "name": "justo-spy",
-  "version": "0.3.1",
-  "description": "A test spy library.",
+  "version": "0.4.0",
+  "description": "Test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
   "author": {

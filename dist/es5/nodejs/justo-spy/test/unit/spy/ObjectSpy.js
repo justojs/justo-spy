@@ -37,7 +37,7 @@ describe("ObjectSpy", function() {
   });
 
   describe("#constructor()", function() {
-    it("constructor() from spy()", function() {
+    it("constructor(object) from spy(object)", function() {
       double.must.be.same(user);
       double.spy.must.be.instanceOf("ObjectSpy");
     });
@@ -45,29 +45,60 @@ describe("ObjectSpy", function() {
 
   describe("Methods", function() {
     describe("#monitor()", function() {
-      it("monitor(method)", function() {
+      it("monitor('method()'')", function() {
         double.spy.monitor("changePassword()");
         double.spy.members.must.have("changePassword");
         double.changePassword.must.be.instanceOf(Function);
         double.changePassword.spy.must.be.instanceOf("FunctionSpy");
       });
+
+      it("monitor('method() {}')", function() {
+        double.spy.monitor("dummy() {}");
+        double.spy.members.must.have("dummy");
+        double.dummy.must.be.instanceOf(Function);
+        double.dummy.spy.must.be.instanceOf("FunctionSpy");
+      });
     });
 
     describe("Call", function() {
-      beforeEach(function() {
-        double.spy.monitor("changePassword()");
+      describe("Method", function() {
+        beforeEach(function() {
+          double.spy.monitor("changePassword()");
+        });
+
+        it("Once", function() {
+          double.changePassword("newPwd").must.be.eq("pwd");
+          double.spy.called("changePassword").must.be.eq(1);
+          double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["newPwd"], value: "pwd", error: undefined});
+        });
+
+        it("Twice", function() {
+          double.changePassword("pwd1").must.be.eq("pwd");
+          double.changePassword("pwd2").must.be.eq("pwd1");
+          double.spy.called("changePassword").must.be.eq(2);
+          double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["pwd1"], value: "pwd", error: undefined});
+          double.spy.getCall("changePassword", 1).must.have({callNo: 1, arguments: ["pwd2"], value: "pwd1", error: undefined});
+        });
       });
 
-      it("Once", function() {
-        double.changePassword("newPwd").must.be.eq("pwd");
-        double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["newPwd"], value: "pwd", error: undefined});
-      });
+      describe("Dummy method", function() {
+        beforeEach(function() {
+          double.spy.monitor("dummy() {}");
+        });
 
-      it("Twice", function() {
-        double.changePassword("pwd1").must.be.eq("pwd");
-        double.changePassword("pwd2").must.be.eq("pwd1");
-        double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["pwd1"], value: "pwd", error: undefined});
-        double.spy.getCall("changePassword", 1).must.have({callNo: 1, arguments: ["pwd2"], value: "pwd1", error: undefined});
+        it("Once", function() {
+          double.dummy(1, 2);
+          double.spy.called("dummy()").must.be.eq(1);
+          double.spy.getCall("dummy()", 0).must.have({callNo: 0, arguments: [1, 2], value: undefined, error: undefined});
+        });
+
+        it("Twice", function() {
+          double.dummy(1, 2);
+          double.dummy(2, 1);
+          double.spy.called("dummy()").must.be.eq(2);
+          double.spy.getCall("dummy()", 0).must.have({callNo: 0, arguments: [1, 2], value: undefined, error: undefined});
+          double.spy.getCall("dummy()", 1).must.have({callNo: 1, arguments: [2, 1], value: undefined, error: undefined});
+        });
       });
     });
 
@@ -321,7 +352,7 @@ describe("ObjectSpy", function() {
           });
         });
 
-        describe("#alwaysRaised(method, msg)", function() {
+        describe("#alwaysRaised(method, msg : String)", function() {
           it("Never", function() {
             double.spy.alwaysRaised("changePassword", "Password can't be undefined.").must.be.eq(false);
           });

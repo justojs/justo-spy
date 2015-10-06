@@ -17,6 +17,14 @@ describe("FunctionSpy", function() {
   });
 
   describe("#constructor()", function() {
+    it("constructor() - dummy function spy", function() {
+      double = spy();
+      double.spy.must.be.instanceOf("FunctionSpy");
+      double.spy.fn.must.be.instanceOf(Function);
+      double.spy.callCount.must.be.eq(0);
+      double.spy.calls.length.must.be.eq(0);
+    });
+
     it("constructor(fn) from spy(fn)", function() {
       function sum(x, y) {
         return x + y;
@@ -361,6 +369,20 @@ describe("FunctionSpy", function() {
 
         it("raised(msg) = 0", function() {
           double.spy.raised("Error message").must.be.eq(0);
+        });
+      });
+
+      describe("raised(msg : RegExp)", function() {
+        it("raised(msg) = 1", function() {
+          double.spy.raised(/x is/).must.be.eq(1);
+        });
+
+        it("raised(msg) = 1", function() {
+          double.spy.raised(/y is/).must.be.eq(1);
+        });
+
+        it("raised(msg) = 0", function() {
+          double.spy.raised(/unknown/).must.be.eq(0);
         });
       });
     });

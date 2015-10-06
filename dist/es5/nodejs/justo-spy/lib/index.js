@@ -1,10 +1,13 @@
 /**
  * Creates a double to spy an object.
  *
- * @overload Function spy
+ * @overload Dummy function spy.
+ * @noparam
+ *
+ * @overload Function spy.
  * @param fn:function      The function to spy.
  *
- * @overload Object spy
+ * @overload Object spy.
  * @param obj:object              The object to spy.
  * @param [mems]:string|string[]  The members to spy.
  */
@@ -27,18 +30,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function spy() {
   var res;
 
-  //(1) arguments
+  //(1) create spy
 
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
 
-  if (args.length === 0) throw new Error("Object to spy expected.");
+  if (args.length === 0) {
+    res = createFunctionSpy(function () {});
+  } else {
+    if (args[0] instanceof Function) res = createFunctionSpy(args[0]);else res = createObjectSpy.apply(undefined, args);
+  }
 
-  //(2) create spy
-  if (args[0] instanceof Function) res = createFunctionSpy(args[0]);else res = createObjectSpy.apply(undefined, args);
-
-  //(3) return
+  //(2) return
   return res;
 }
 
@@ -171,6 +175,10 @@ var Call = (function () {
      * @return boolean
      *
      * @overload
+     * @param msg:RegExp  The error message.
+     * @return boolean
+     *
+     * @overload
      * @param error:object  The object raised.
      * @return boolean
      */
@@ -182,7 +190,7 @@ var Call = (function () {
       //(1) check
       if (this.error) {
         if (error) {
-          if (error.hasOwnProperty("message")) res = this.error.message == error.message;else res = this.error.message == error;
+          if (error.hasOwnProperty("message")) res = this.error.message == error.message;else if (error instanceof RegExp) res = error.test(this.error.message);else res = this.error.message == error;
         } else {
           res = true;
         }
@@ -479,6 +487,9 @@ var Calls = (function () {
      * @return number
      *
      * @overload
+     * @param msg:RegExp    The error message.
+     *
+     * @overload
      * @param error:object  The error raised.
      * @return number
      */
@@ -506,6 +517,9 @@ var Calls = (function () {
      * @overload
      * @param error:string  The error message.
      * @return boolean
+     *
+     * @overload
+     * @param error:RegExp  The error message.
      *
      * @overload
      * @param error:object  The error.
@@ -653,24 +667,28 @@ var ObjectSpy = (function () {
   /**
    * Defines a monitor for a member.
    *
-   * @param name:string   The member name. As method, name().
+   * @param name:string   The member name: method(), method() {} or @pr.
    */
 
   _createClass(ObjectSpy, [{
     key: "monitor",
     value: function monitor(name) {
-      if (/\(\)$/.test(name)) this.monitorMethod(name.replace("()", ""));else if (/^@/.test(name)) this.monitorAttribute(name.substr(1));else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
+      var PROP = /^@/;
+      var DUMMY = /\(\) *{}$/;
+      var METHOD = /\(\)$/;
+
+      if (PROP.test(name)) this.monitorProperty(name.replace(PROP, ""));else if (DUMMY.test(name)) this.monitorDummyMethod(name.replace(DUMMY, ""));else if (METHOD.test(name)) this.monitorMethod(name.replace(METHOD, ""));else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
     }
 
     /**
-     * Defines an attribute monitor.
+     * Defines a property monitor.
      *
      * @private
      * @param name:string The attribute name.
      */
   }, {
-    key: "monitorAttribute",
-    value: function monitorAttribute(name) {
+    key: "monitorProperty",
+    value: function monitorProperty(name) {
       var double;
 
       //(1) create double
@@ -691,6 +709,35 @@ var ObjectSpy = (function () {
     }
 
     /**
+     * Creates a dummy method and monitors it.
+     *
+     * @private
+     * @param name:string The method name.
+     */
+  }, {
+    key: "monitorDummyMethod",
+    value: function monitorDummyMethod(name) {
+      var double, mon;
+
+      //(1) create double and monitor function
+      double = new FunctionSpy(function () {});
+      mon = function () {
+        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          args[_key3] = arguments[_key3];
+        }
+
+        return double.call(args);
+      };
+      Object.defineProperty(mon, "spy", { value: double });
+
+      //(2) double method
+      Object.defineProperty(this.object, name, { value: mon, enumerable: true });
+
+      //(3) add spied member
+      this.members[name] = double;
+    }
+
+    /**
      * Defines a method monitor.
      *
      * @private
@@ -704,8 +751,8 @@ var ObjectSpy = (function () {
       //(1) create double and monitor function
       double = new FunctionSpy(this.object[name].bind(this.object));
       mon = function () {
-        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-          args[_key3] = arguments[_key3];
+        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+          args[_key4] = arguments[_key4];
         }
 
         return double.call(args);
