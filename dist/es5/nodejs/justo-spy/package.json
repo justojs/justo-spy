@@ -1,6 +1,6 @@
 {
   "name": "justo-spy",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -52,7 +52,6 @@
     "grunt": "^0.4.5",
     "grunt-babel": "*",
     "grunt-contrib-clean": "*",
-    "grunt-contrib-concat": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-uglify": "*",

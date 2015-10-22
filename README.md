@@ -9,25 +9,19 @@ Features:
 - Allow to create function spies.
 - Allow to create object spies.
 
+## Test doubles
 
-1. [Install](#install)
-2. [Test spies](#test-spies)
-3. [Function spies](#function-spies)
-4. [Object spies](#object-spies)
+A **test double** is an object that represents other, used to perform in unit testings.
+There are several types of test doubles:
+
+- **Test dummies**. Test double that responds to calls with no action.
+- **Test stubs**. Test double that responds to calls with predefined responses.
+- **Test spies**. Test double that monitors the calls to an object.
 
 ## Install
 
-We can use the spies from two packages: `justo-spy` and `justo-double`.
-`justo-double` also contains stub and dummy support.
-
 ```
 npm install justo-spy
-```
-
-Or:
-
-```
-npm install justo-double
 ```
 
 ## Test spies
@@ -39,13 +33,7 @@ A **test spy** is a test double that monitors the calls to an object.
 The `spy()` function is used to create the function spies:
 
 ```
-const spy = require("justo-spy").spy;
-```
-
-Or:
-
-```
-const spy = require("justo-double").spy;
+const spy = require("justo-spy");
 ```
 
 ## Function spies

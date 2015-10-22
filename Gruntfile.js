@@ -20,7 +20,15 @@ module.exports = function(grunt) {
 
       es5: {
         files: {
-          "build/es5/lib/index.js": "build/es5/lib/index.js"
+          "build/es5/lib/index.js": "lib/index.js",
+          "build/es5/lib/Call.js": "lib/Call.js",
+          "build/es5/lib/CallableSpy.js": "lib/CallableSpy.js",
+          "build/es5/lib/Calls.js": "lib/Calls.js",
+          "build/es5/lib/FunctionCall.js": "lib/FunctionCall.js",
+          "build/es5/lib/FunctionSpy.js": "lib/FunctionSpy.js",
+          "build/es5/lib/ObjectSpy.js": "lib/ObjectSpy.js",
+          "build/es5/lib/PropertyCall.js": "lib/PropertyCall.js",
+          "build/es5/lib/PropertySpy.js": "lib/PropertySpy.js"
         }
       }
     },
@@ -31,21 +39,10 @@ module.exports = function(grunt) {
       }
     },
 
-    concat: {
-      options: {
-        separator: "\n\n"
-      },
-
-      preCompiler: {
-        src: ["lib/main.js", "lib/spy/*.*"],
-        dest: "build/es5/lib/index.js"
-      }
-    },
-
     copy: {
       nodejs: {
         files: [
-          {cwd: "build/es5/", src: ["lib/index.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
+          {cwd: "build/es5/", src: ["lib/*.js"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
           {src: ["package.json", "README.md"], dest: "dist/es5/nodejs/<%= pkg.name %>/", expand: true},
           {src: ["test/**/*.*"], dest: "dist/es5/nodejs/<%= pkg.name %>", expand: true}
         ]
@@ -102,7 +99,6 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks
   grunt.loadNpmTasks("grunt-babel");
   grunt.loadNpmTasks("grunt-contrib-clean");
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -110,7 +106,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-travis-lint");
 
   //aliases
-  grunt.registerTask("buildes5", ["jshint", "clean:es5", "concat:preCompiler", "babel:es5", "copy:nodejs"]);
+  grunt.registerTask("buildes5", ["jshint", "clean:es5", "babel:es5", "copy:nodejs"]);
   grunt.registerTask("es5", ["buildes5", "mochaTest:es5"]);
 
   // Default task
