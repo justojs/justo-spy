@@ -130,20 +130,59 @@ describe("ObjectSpy", function() {
       });
 
       describe("#getCall()", function() {
-        it("Never", function() {
-          assert.strictEqual(double.spy.getCall("changePassword", 0), undefined);
+        describe("No call performed", function() {
+          it("getCall(member)", function() {
+            assert(double.spy.getCall("changePassword()") === undefined);
+          });
+
+          it("getCall(member, 0)", function() {
+            assert(double.spy.getCall("changePassword()", 0) === undefined);
+          });
+
+          it("getCall(member, 1)", function() {
+            assert(double.spy.getCall("changePassword()", 1) === undefined);
+          });
         });
 
-        it("Once", function() {
-          double.changePassword("PWD");
-          double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["PWD"], value: "pwd", error: undefined});
+        describe("Only one call performed", function() {
+          beforeEach(function() {
+            double.changePassword("PWD");
+          });
+
+          it("getCall(member)", function() {
+            double.spy.getCall("changePassword()").must.be.eq({callNo: 0, arguments: ["PWD"], value: "pwd", error: undefined});
+          });
+
+          it("getCall(member, 0)", function() {
+            double.spy.getCall("changePassword()", 0).must.be.eq({callNo: 0, arguments: ["PWD"], value: "pwd", error: undefined});
+          });
+
+          it("getCall(member, 1)", function() {
+            assert(double.spy.getCall("changePassword()", 1) === undefined);
+          });
         });
 
-        it("Twice", function() {
-          double.changePassword("pwd1");
-          double.changePassword("pwd2");
-          double.spy.getCall("changePassword", 0).must.have({callNo: 0, arguments: ["pwd1"], value: "pwd", error: undefined});
-          double.spy.getCall("changePassword", 1).must.have({callNo: 1, arguments: ["pwd2"], value: "pwd1", error: undefined});
+        describe("Several calls performed", function() {
+          beforeEach(function() {
+            double.changePassword("PWD0");
+            double.changePassword("PWD1");
+          });
+
+          it("getCall(member)", function() {
+            double.spy.getCall.bind(double.spy, "changePassword()").must.raise("Several calls performed. Invoked as if only one performed.");
+          });
+
+          it("getCall(member, 0)", function() {
+            double.spy.getCall("changePassword()", 0).must.be.eq({callNo: 0, arguments: ["PWD0"], value: "pwd", error: undefined});
+          });
+
+          it("getCall(member, 1)", function() {
+            double.spy.getCall("changePassword()", 1).must.be.eq({callNo: 1, arguments: ["PWD1"], value: "PWD0", error: undefined});
+          });
+
+          it("getCall(member, outofrange)", function() {
+            assert(double.spy.getCall("changePassword()", 2)  === undefined);
+          });
         });
       });
 

@@ -121,22 +121,60 @@ describe("FunctionSpy", function() {
     });
 
     describe("#getCall()", function() {
-      beforeEach(function() {
-        double(1, 1);
-        double(1, 2);
-        double(1, 3);
+      describe("No call performed", function() {
+        it("getCall()", function() {
+          assert(double.spy.getCall() === undefined);
+        });
+
+        it("getCall(0)", function() {
+          assert(double.spy.getCall(0) === undefined);
+        });
+
+        it("getCall(1)", function() {
+          assert(double.spy.getCall(1) === undefined);
+        });
       });
 
-      it("getCall(0)", function() {
-        double.spy.getCall(0).must.have({callNo: 0, arguments: [1, 1], value: 2, error: undefined});
+      describe("Only one call performed", function() {
+        beforeEach(function() {
+          double(1, 1);
+        });
+
+        it("getCall()", function() {
+          double.spy.getCall().must.have({callNo: 0, arguments: [1, 1], value: 2, error: undefined});
+        });
+
+        it("getCall(0)", function() {
+          double.spy.getCall().must.have({callNo: 0, arguments: [1, 1], value: 2, error: undefined});
+        });
+
+        it("getCall(1)", function() {
+          assert(double.spy.getCall(1) === undefined);
+        });
       });
 
-      it("getCall(1)", function() {
-        double.spy.getCall(1).must.have({callNo: 1, arguments: [1, 2], value: 3, error: undefined});
-      });
+      describe("Several calls performed", function() {
+        beforeEach(function() {
+          double(1, 1);
+          double(1, 2);
+          double(1, 3);
+        });
 
-      it("getCall(ouOfRange)", function() {
-        assert(double.spy.getCall(123) === undefined);
+        it("getCall(0)", function() {
+          double.spy.getCall(0).must.have({callNo: 0, arguments: [1, 1], value: 2, error: undefined});
+        });
+
+        it("getCall(1)", function() {
+          double.spy.getCall(1).must.have({callNo: 1, arguments: [1, 2], value: 3, error: undefined});
+        });
+
+        it("getCall(ouOfRange)", function() {
+          assert(double.spy.getCall(123) === undefined);
+        });
+
+        it("getCall()", function() {
+          double.spy.getCall.bind(double.spy).must.raise("Several calls performed. Invoked as if only one performed.");
+        });
       });
     });
 

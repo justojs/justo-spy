@@ -97,8 +97,12 @@ To query the monitoring performed by the spy, we can use the following methods.
 Returns a specified call:
 
 ```
+getCall() : Call
 getCall(i : number) : Call
 ```
+
+If no argument is passed, the only one call is returned; if several calls performed,
+the method throws an error.
 
 #### .spy.getLastCall()
 

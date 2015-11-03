@@ -211,7 +211,7 @@ var ObjectSpy = (function () {
      */
   }, {
     key: "getLastCall",
-    value: function getLastCall(name, i) {
+    value: function getLastCall(name) {
       return this.getDouble(name).getLastCall();
     }
 
