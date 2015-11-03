@@ -252,6 +252,10 @@ Example:
 user.spy.monitor("changePassword() {}")
 ```
 
+Right now, we can only spy a method if the object hasn't defined an
+own member with the same name. However, if the method is defined in the class, we
+can do it.
+
 #### Monitoring properties
 
 To spy a property, we must also use the `monitor()` method, but the `name`

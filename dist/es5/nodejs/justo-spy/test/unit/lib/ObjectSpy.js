@@ -10,6 +10,8 @@ describe("ObjectSpy", function() {
   function User(name, pwd) {
     this._username = name;
     this.password = pwd;
+    Object.defineProperty(this, "roMethod", {value: function() {}});
+    Object.defineProperty(this, "rwMethod", {value: function() {}, writable: true});
   }
 
   User.prototype.changePassword = function(pwd) {
@@ -52,11 +54,26 @@ describe("ObjectSpy", function() {
         double.changePassword.spy.must.be.instanceOf("FunctionSpy");
       });
 
-      it("monitor('method() {}')", function() {
+      it("monitor('method() {}') - undefined own method", function() {
         double.spy.monitor("dummy() {}");
         double.spy.members.must.have("dummy");
         double.dummy.must.be.instanceOf(Function);
         double.dummy.spy.must.be.instanceOf("FunctionSpy");
+      });
+
+      it("monitor('method()') - defined own member", function() {
+        double.spy.monitor.bind(double.spy, "roMethod()").must.raise("Object has defined an own 'roMethod' member. It can't be spied.");
+      });
+
+      it("monitor('method() {}') - defined own member as read-only", function() {
+        double.spy.monitor.bind(double.spy, "roMethod() {}").must.raise("Object has defined an own 'roMethod' member as read-only. It can't be spied.");
+      });
+
+      it("monitor('method() {}') - defined own member as R/W", function() {
+        double.spy.monitor("rwMethod() {}");
+        double.spy.members.must.have("rwMethod");
+        double.rwMethod.must.be.instanceOf(Function);
+        double.rwMethod.spy.must.be.instanceOf("FunctionSpy");
       });
     });
 

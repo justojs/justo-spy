@@ -93,7 +93,7 @@ var ObjectSpy = (function () {
   }, {
     key: "monitorDummyMethod",
     value: function monitorDummyMethod(name) {
-      var double, mon;
+      var double, mon, desc;
 
       //(1) create double and monitor function
       double = new _FunctionSpy2["default"](function () {});
@@ -107,7 +107,13 @@ var ObjectSpy = (function () {
       Object.defineProperty(mon, "spy", { value: double });
 
       //(2) double method
-      Object.defineProperty(this.object, name, { value: mon, enumerable: true });
+      desc = Object.getOwnPropertyDescriptor(this.object, name);
+
+      if (!desc) {
+        Object.defineProperty(this.object, name, { value: mon });
+      } else {
+        if (desc.writable) this.object[name] = mon;else throw new Error("Object has defined an own '" + name + "' member as read-only. It can't be spied.");
+      }
 
       //(3) add spied member
       this.members[name] = double;
@@ -122,7 +128,7 @@ var ObjectSpy = (function () {
   }, {
     key: "monitorMethod",
     value: function monitorMethod(name) {
-      var double, mon;
+      var double, mon, desc;
 
       //(1) create double and monitor function
       double = new _FunctionSpy2["default"](this.object[name].bind(this.object));
@@ -136,7 +142,9 @@ var ObjectSpy = (function () {
       Object.defineProperty(mon, "spy", { value: double });
 
       //(2) double method
-      Object.defineProperty(this.object, name, { value: mon, enumerable: true });
+      desc = Object.getOwnPropertyDescriptor(this.object, name);
+
+      if (desc) throw new Error("Object has defined an own '" + name + "' member. It can't be spied.");else Object.defineProperty(this.object, name, { value: mon });
 
       //(3) add spied member
       this.members[name] = double;
