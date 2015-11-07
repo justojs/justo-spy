@@ -178,6 +178,37 @@ describe("FunctionSpy", function() {
       });
     });
 
+    describe("#getArguments()", function() {
+      it("getArguments() - no call performed", function() {
+        assert(double.spy.getArguments() === undefined);
+      });
+
+      it("getArguments() - one call performed", function() {
+        double(1, 1);
+        double.spy.getArguments().must.be.eq([1, 1]);
+      });
+
+      it("getArguments() - several calls performed", function() {
+        double(1, 1);
+        double(1, 2);
+        double.spy.getArguments.bind(double.spy).must.raise("Several calls performed. Invoked as if only one performed.");
+      });
+
+      it("getArguments(i) - into bounds", function() {
+        double(1, 1);
+        double(1, 2);
+        double(1, 3);
+        double.spy.getArguments(1).must.be.eq([1, 2]);
+      });
+
+      it("getArguments(i) - out of bounds", function() {
+        double(1, 1);
+        double(1, 2);
+        double(1, 3);
+        assert(double.spy.getArguments(123) === undefined);
+      });
+    });
+
     describe("#getLastCall()", function() {
       it("getLastCall()", function() {
         double(1, 1);

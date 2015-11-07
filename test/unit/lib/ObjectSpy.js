@@ -186,6 +186,33 @@ describe("ObjectSpy", function() {
         });
       });
 
+      describe("#getArguments()", function() {
+        it("getArguments(method) - no call performed", function() {
+          assert(double.spy.getArguments("changePassword()") === undefined);
+        });
+
+        it("getArguments(method) - one call performed", function() {
+          double.changePassword("PWD");
+          double.spy.getArguments("changePassword()").must.be.eq(["PWD"]);
+        });
+
+        it("getArguments(method) - several calls performed", function() {
+          double.changePassword("PWD1");
+          double.changePassword("PWD2");
+          double.spy.getArguments.bind(double.spy, "changePassword()").must.raise("Several calls performed. Invoked as if only one performed.");
+        });
+
+        it("getArguments(method, i) - into bounds", function() {
+          double.changePassword("PWD1");
+          double.changePassword("PWD2");
+          double.spy.getArguments("changePassword()", 0).must.be.eq(["PWD1"]);
+        });
+
+        it("getArguments(method, i) - out of bounds", function() {
+          assert(double.spy.getArguments("changePassword()", 123) === undefined);
+        });
+      });
+
       describe("#getLastCall()", function() {
         it("Never", function() {
           assert.strictEqual(double.spy.getLastCall("changePassword"), undefined);

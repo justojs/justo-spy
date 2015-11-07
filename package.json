@@ -1,6 +1,6 @@
 {
   "name": "justo-spy",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Test spy library.",
   "homepage": "http://www.justojs.org",
   "license": "MIT",
@@ -17,8 +17,6 @@
     }
   ],
   "keywords": [
-    "Browser test",
-    "Browser testing",
     "Justo",
     "Justo.js",
     "Node test",

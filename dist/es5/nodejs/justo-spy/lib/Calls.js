@@ -68,6 +68,24 @@ var Calls = (function () {
     }
 
     /**
+     * Returns the arguments of a call. Similar to getCall().arguments.
+     *
+     * @overload The arguments of the only call one performed.
+     * @noparam
+     * @return object[]
+     *
+     * @overload The arguments of a specified call.
+     * @param i:number  The call number.
+     * @return object[]
+     */
+  }, {
+    key: "getArguments",
+    value: function getArguments() {
+      var call = this.getCall.apply(this, arguments);
+      return call ? call.arguments : undefined;
+    }
+
+    /**
      * Returns the last call.
      *
      * @return Call

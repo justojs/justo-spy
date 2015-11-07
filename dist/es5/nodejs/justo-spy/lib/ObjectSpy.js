@@ -204,6 +204,19 @@ var ObjectSpy = (function () {
     }
 
     /**
+     * Returns the arguments of a call.
+     *
+     * @param name:string The member name.
+     * @param i:number    The position.
+     * @return object[]
+     */
+  }, {
+    key: "getArguments",
+    value: function getArguments(name, i) {
+      return this.getDouble(name).getArguments(i);
+    }
+
+    /**
      * Returns the last call.
      *
      * @param name:string The member name.

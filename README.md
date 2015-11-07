@@ -104,6 +104,15 @@ getCall(i : number) : Call
 If no argument is passed, the only one call is returned; if several calls performed,
 the method throws an error.
 
+#### .spy.getArguments()
+
+Returns the arguments of a call, similar to `getCall().arguments` or `getCall(i).arguments`:
+
+```
+getArguments() : object[]
+getArguments(i : number) : object[]
+```
+
 #### .spy.getLastCall()
 
 Returns the last call:

@@ -52,8 +52,21 @@ var CallableSpy = (function () {
      */
   }, {
     key: "getCall",
-    value: function getCall(i) {
-      return this.calls.getCall(i);
+    value: function getCall() {
+      var _calls;
+
+      return (_calls = this.calls).getCall.apply(_calls, arguments);
+    }
+
+    /**
+     * @alias Calls.getArguments()
+     */
+  }, {
+    key: "getArguments",
+    value: function getArguments() {
+      var _calls2;
+
+      return (_calls2 = this.calls).getArguments.apply(_calls2, arguments);
     }
 
     /**
