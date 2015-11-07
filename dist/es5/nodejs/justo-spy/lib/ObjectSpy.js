@@ -19,6 +19,12 @@ var _PropertySpy = require("./PropertySpy");
 
 var _PropertySpy2 = _interopRequireDefault(_PropertySpy);
 
+//private member symbols
+var monitorProperty = Symbol();
+var monitorDummyMethod = Symbol();
+var monitorMethod = Symbol();
+var getDouble = Symbol();
+
 /**
  * Spy on an object.
  *
@@ -53,7 +59,7 @@ var ObjectSpy = (function () {
       var DUMMY = /\(\) *{}$/;
       var METHOD = /\(\)$/;
 
-      if (PROP.test(name)) this.monitorProperty(name.replace(PROP, ""));else if (DUMMY.test(name)) this.monitorDummyMethod(name.replace(DUMMY, ""));else if (METHOD.test(name)) this.monitorMethod(name.replace(METHOD, ""));else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
+      if (PROP.test(name)) this[monitorProperty](name.replace(PROP, ""));else if (DUMMY.test(name)) this[monitorDummyMethod](name.replace(DUMMY, ""));else if (METHOD.test(name)) this[monitorMethod](name.replace(METHOD, ""));else throw new Error("Member name must be 'method()' or '@attr'. Received: " + name + ".");
     }
 
     /**
@@ -63,8 +69,8 @@ var ObjectSpy = (function () {
      * @param name:string The attribute name.
      */
   }, {
-    key: "monitorProperty",
-    value: function monitorProperty(name) {
+    key: monitorProperty,
+    value: function value(name) {
       var double;
 
       //(1) create double
@@ -91,8 +97,8 @@ var ObjectSpy = (function () {
      * @param name:string The method name.
      */
   }, {
-    key: "monitorDummyMethod",
-    value: function monitorDummyMethod(name) {
+    key: monitorDummyMethod,
+    value: function value(name) {
       var double, mon, desc;
 
       //(1) create double and monitor function
@@ -126,8 +132,8 @@ var ObjectSpy = (function () {
      * @param name:string The method name.
      */
   }, {
-    key: "monitorMethod",
-    value: function monitorMethod(name) {
+    key: monitorMethod,
+    value: function value(name) {
       var double, mon, desc;
 
       //(1) create double and monitor function
@@ -158,8 +164,8 @@ var ObjectSpy = (function () {
      * @throw Error When the member is not being spied.
      */
   }, {
-    key: "getDouble",
-    value: function getDouble(name) {
+    key: getDouble,
+    value: function value(name) {
       var ATTR = 1,
           METHOD = 2;
       var res, type;
@@ -200,7 +206,7 @@ var ObjectSpy = (function () {
   }, {
     key: "getCall",
     value: function getCall(name, i) {
-      return this.getDouble(name).getCall(i);
+      return this[getDouble](name).getCall(i);
     }
 
     /**
@@ -213,7 +219,7 @@ var ObjectSpy = (function () {
   }, {
     key: "getArguments",
     value: function getArguments(name, i) {
-      return this.getDouble(name).getArguments(i);
+      return this[getDouble](name).getArguments(i);
     }
 
     /**
@@ -225,7 +231,7 @@ var ObjectSpy = (function () {
   }, {
     key: "getLastCall",
     value: function getLastCall(name) {
-      return this.getDouble(name).getLastCall();
+      return this[getDouble](name).getLastCall();
     }
 
     /**
@@ -237,7 +243,7 @@ var ObjectSpy = (function () {
   }, {
     key: "called",
     value: function called(name) {
-      return this.getDouble(name).called();
+      return this[getDouble](name).called();
     }
 
     /**
@@ -250,7 +256,7 @@ var ObjectSpy = (function () {
   }, {
     key: "calledWith",
     value: function calledWith(name, args) {
-      return this.getDouble(name).calledWith(args);
+      return this[getDouble](name).calledWith(args);
     }
 
     /**
@@ -263,7 +269,7 @@ var ObjectSpy = (function () {
   }, {
     key: "alwaysCalledWith",
     value: function alwaysCalledWith(name, args) {
-      return this.getDouble(name).alwaysCalledWith(args);
+      return this[getDouble](name).alwaysCalledWith(args);
     }
 
     /**
@@ -281,7 +287,7 @@ var ObjectSpy = (function () {
   }, {
     key: "returned",
     value: function returned(name, value) {
-      return this.getDouble(name).returned(value);
+      return this[getDouble](name).returned(value);
     }
 
     /**
@@ -298,7 +304,7 @@ var ObjectSpy = (function () {
   }, {
     key: "alwaysReturned",
     value: function alwaysReturned(name, value) {
-      return this.getDouble(name).alwaysReturned(value);
+      return this[getDouble](name).alwaysReturned(value);
     }
 
     /**
@@ -321,7 +327,7 @@ var ObjectSpy = (function () {
   }, {
     key: "raised",
     value: function raised(name, error) {
-      return this.getDouble(name).raised(error);
+      return this[getDouble](name).raised(error);
     }
 
     /**
@@ -344,7 +350,7 @@ var ObjectSpy = (function () {
   }, {
     key: "alwaysRaised",
     value: function alwaysRaised(name, error) {
-      return this.getDouble(name).alwaysRaised(error);
+      return this[getDouble](name).alwaysRaised(error);
     }
   }]);
 
