@@ -1,6 +1,9 @@
 //imports
-import FunctionSpy from "./FunctionSpy";
-import ObjectSpy from "./ObjectSpy";
+import FunctionSpy from "./lib/FunctionSpy";
+import ObjectSpy from "./lib/ObjectSpy";
+
+//api
+module.exports = spy;
 
 /**
  * Creates a double to spy an object.
@@ -15,7 +18,7 @@ import ObjectSpy from "./ObjectSpy";
  * @param obj:object              The object to spy.
  * @param [mems]:string|string[]  The members to spy.
  */
-export default function spy(...args) {
+function spy(...args) {
   var res;
 
   //(1) create spy
